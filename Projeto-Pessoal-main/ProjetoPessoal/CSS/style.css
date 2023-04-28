@@ -1,0 +1,71 @@
+*{
+    font-family: poppins;
+}
+
+.container{
+    display: flex;
+    width: 80%;
+    margin:auto;
+}
+
+body{
+    margin: 0;
+    padding: 0; 
+}
+
+/*header*/
+.header{
+     background-color: black;
+     display: flex;
+     }
+ .navbar{
+     display: flex;
+     width: 285px;
+     align-items: center;
+     justify-content: space-between;
+     height: 50px;
+ }
+ .header .container{
+     justify-content: space-between;
+ }
+ .container img{
+     margin-top:1.5%;
+ }
+ .lista{
+     display: flex;
+     padding: 10px;
+     background-color: 0088e5;
+     font-weight: 500;
+     text-decoration: none;
+     color: aliceblue;
+ }
+ .navbar i:hover{
+    color:brown;
+ }
+ /*end header*/
+/*Cards das bandas*/
+.pg1{
+    justify-content: center;
+    align-items: center;
+}
+.card{
+    background-color: grey;
+    height: 240px;
+    width: 260px;
+    display: flex;
+    border-radius: 30px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1%;
+    margin: 50px;
+}
+.card img{
+    height: 200px;
+    width: 240px;
+    align-self: center;
+    border-radius: 10px;
+}
+.card:hover{
+    transition: 1s;
+    background-color:brown;
+}

@@ -1,0 +1,66 @@
+*{
+    font-family: poppins;
+}
+.container{
+    display: flex;
+    width: 80%;
+    margin:auto;
+}
+
+body{
+    margin: 0;
+    padding: 0; 
+}
+
+/*header*/
+.header{
+     background-color: black;
+     display: flex;
+     }
+ .navbar{
+     display: flex;
+     width: 285px;
+     align-items: center;
+     justify-content: space-between;
+     height: 50px;
+ }
+ .header .container{
+     justify-content: space-between;
+ }
+ .container img{
+     margin-top:1.5%;
+ }
+ .lista{
+     display: flex;
+     padding: 10px;
+     background-color: 0088e5;
+     font-weight: 500;
+     text-decoration: none;
+     color: aliceblue;
+ }
+ .navbar i:hover{
+    color:brown;
+ }
+ /*end header*/
+
+ /*Banda*/
+ .pag1{
+    display: inline-block;
+ }
+ .banda img{
+    height: 500px;
+    width: 400px;
+    border-radius: 20px;
+    align-self: center;
+    margin: 20px;
+ }
+ .card{
+    background-color: gray;
+    height: 550px;
+    width: 450px;
+    border-radius: 20px;
+    margin: 10px;
+ }
+ .infoBanda{
+    align-items: flex-end;
+ }
