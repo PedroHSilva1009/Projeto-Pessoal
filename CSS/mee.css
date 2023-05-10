@@ -44,7 +44,33 @@ body{
  /*end header*/
 
  /*Banda*/
- .pag1{
-    background-image: url(../assets/budang.jpg);
-    background-size: auto;
+ .infoBanda img{
+    width: 200px;
+    border-radius: 0 20px 0 20px;
+}
+.infoBanda{
+    width: 230px;
+    height: 240px;
+    background-color:brown;
+    border-radius: 20px 0px 20px 0px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.textoBanda p{
+    color: aliceblue;
+    margin-left: 20px;
+}
+.pg1{
+    background-color: black;
+    height: 300px;
+}
+.pg1 a{
+    margin-left: 20px;
+}
+/* Fim da banda */
+/* começo de show */
+.container h1{
+    align-self: center;
 }

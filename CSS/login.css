@@ -35,6 +35,7 @@ body {
 .container img {
     margin-top: 1.5%;
 }
+
 .lista {
     display: flex;
     padding: 10px;
@@ -44,12 +45,12 @@ body {
     color: aliceblue;
 }
 
-.navbar a:hover {
+.navbar i:hover {
     color: brown;
     transition: 0.5s;
+ 
 }
 /*end header*/
-
 /* Começo do cadastro */
 .form .container{
     display: flex;
@@ -63,7 +64,7 @@ body {
     border-radius: 30px;
 }
 .container span{
-    padding: 10px;
+    margin-top: 40px;
 }
 .container input{
     width: 200px;
@@ -74,7 +75,7 @@ body {
     align-items: center;
 }
 .container button{
-    margin-top: 40px;
+    margin-top: 20px;
     border-radius: 20px;
     background-color: black;
     color: white;
@@ -86,5 +87,10 @@ body {
 .container button:hover{
     transition: 1s;
     background-color:white;
+    color: black;
+}
+.container .redCad{
+    margin-top: 40px;
+    font-weight: 900;
     color: black;
 }
