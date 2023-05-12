@@ -64,7 +64,7 @@ body {
     border-radius: 30px;
 }
 .container span{
-    margin-top: 40px;
+    margin-top: 25px;
 }
 .container input{
     width: 200px;
@@ -88,6 +88,7 @@ body {
     transition: 1s;
     background-color:white;
     color: black;
+    transition: 1,5
 }
 .container .redCad{
     margin-top: 40px;

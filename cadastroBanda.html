@@ -8,9 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="CSS/red.css">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <title>Document</title>
+    <link rel="stylesheet" href="CSS/cadastroBanda.css">
+    <title>Cadastro banda</title>
 </head>
 <body>
     <div class="header">
@@ -24,24 +24,24 @@
                 <a class="lista" href="login.html">
                     <i class="fa-solid fa-user"></i>
                 </a>
-                <a class="lista" href="">
+                <a class="lista" href="pagRed.html">
                     <i class="fa-solid fa-right-to-bracket"></i>
                 </a>
             </ul>
         </div>
     </div>
+
     <div class="form">
         <div class="container">
-            <span>Com que tipo de perfil deseja se cadastrar?</span>
-            <div class="botoesRed">
-                <a href="cadastroBanda.html"><button>Banda</button></a>
-                <a href="cadastroFa.html"><button>Fã</button></a>
-            </div>
+          <span> Digite o nome da sua banda</span> <input type="text" id="nomeBanda">
+          <span> Digite seu email</span> <input type="email" id="emailUsuario">
+          <span> Digite sua senha</span> <input type="password" id="senhaUsuario">
+          <span>Confirme sua senha</span> <input type="password" id="confirmSenha">
+          <span>Insira uma foto da sua banda</span> <input type="file">
+          <button>Cadastre-se</button>
         </div>
       </div>
       
-
-
     
 </body>
 </html>
