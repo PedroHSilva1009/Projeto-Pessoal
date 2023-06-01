@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="CSS/cadastroFa.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+
+  <title>Cadastro</title>
+</head>
+
+<body>
+  <div class="header">
+    <div class="container">
+      <img src="assets/logo.png" alt="" height="50" width="200">
+      <ul class="navbar">
+        <a class="lista" href="sobreMim.html">
+          <i>sobre mim</i>
+      </a>
+        <a class="lista" href="index.html">
+          <i class="fa-solid fa-house"></i>
+        </a>
+        </a>
+        <a class="lista" href="login.html">
+          <i class="fa-solid fa-user"></i>
+        </a>
+        <a class="lista" href="">
+          <i class="fa-solid fa-right-to-bracket"></i>
+        </a>
+      </ul>
+    </div>
+  </div>
+  <div class="form">
+    <div class="container">
+      <span> Digite seu nome de usuario</span> <input type="text" id="nomeUsuario">
+      <span> Digite seu email</span> <input type="email" id="emailUsuario">
+      <span> Digite sua senha</span> <input type="password" id="senhaUsuario">
+      <span>Confirme sua senha</span> <input type="password" id="confirmSenha" onkeyup="valSenha()">
+      <span id="aviso"></span>
+      <button onclick="cadastrar()">Cadastre-se</button>
+    </div>
+  </div>
+    
+</body>
+<script>
+  function valSenha(){
+    if(senhaUsuario.value!=confirmSenha.value){
+      confirmSenha.style.border='solid red 5px'
+      aviso.innerHTML="As senhas sao diferentes"
+    }else{
+      confirmSenha.style.border=''
+      aviso.innerHTML=" " 
+    }
+  }
+
+  function cadastrar() {
+
+//Recupere o valor da nova input pelo nome do id
+// Agora vá para o método fetch logo abaixo
+var nomeVar = nomeUsuario.value;
+var emailVar = emailUsuario.value;
+var senhaVar = senhaUsuario.value;
+var confirmacaoSenhaVar = confirmSenha.value;
+var validaEmail = emailVar.indexOf('@')==-1 || emailVar.indexOf('.')==-1
+var validaSenha = senhaVar!=confirmacaoSenhaVar
+
+if (nomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
+    return false;
+}
+// Enviando o valor da nova input
+fetch("/usuarios/cadastrar", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        // crie um atributo que recebe o valor recuperado aqui
+        // Agora vá para o arquivo routes/usuario.js
+        nomeServer: nomeVar,
+        emailServer: emailVar,
+        senhaServer: senhaVar
+    })
+}).then(function (resposta) {
+
+    console.log("resposta: ", resposta);
+
+    if (resposta.ok) {
+        
+        setTimeout(() => {
+          alert("redirecionando para login")
+            window.location = "login.html";
+        }, "2000")
+
+        limparFormulario();
+        finalizarAguardar();
+    } else {
+        throw ("Houve um erro ao tentar realizar o cadastro!");
+    }
+}).catch(function (resposta) {
+    console.log(`#ERRO: ${resposta}`);
+});
+
+return false;
+}
+
+
+</script>
+</html>

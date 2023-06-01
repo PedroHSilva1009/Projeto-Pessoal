@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mee.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <title>Banda</title>
+</head>
+
+<body onload="atualizarFeed()">
+    <div class="header">
+        <div class="container">
+            <img src="assets/logo.png" alt="" height="50" width="200">
+            <ul class="navbar">
+                <a class="lista" href="sobreMim.html">
+                    <i>sobre mim</i>
+                </a>
+                <a class="lista" href="index.html">
+                    <i class="fa-solid fa-house"></i>
+                </a>
+                </a>
+                <a class="lista" href="login.html">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+                <a class="lista" href="pagRed.html">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            </ul>
+        </div>
+    </div>
+
+    <div class="pg1">
+        <div class="container">
+            <div class="infoBanda">
+                <img src="assets/meebanda.jpg" alt="">
+            </div>
+            <div class="textoBanda">
+                <p>Banda:mee</p>
+                <p>Genero:Hardcore</p>
+                <p>Criação:2018</p>
+                <a href=""><i class="fa-brands fa-spotify"></i></a>
+                <a href=""><i class="fa-brands fa-instagram"></i></i></a>
+                <a href=""><i class="fa-brands fa-soundcloud"></i></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="pgShow">
+        <div class="container">
+            <div class="formOpiniao">
+                <span>Fale algo sobre a banda</span>
+                <select id="selectBOR" name="select">
+                    <option value="bom" selected>Achei bom</option>
+                    <option value="ruim">Achei ruim</option>
+                    <option value="medio">Achei mediocre</option>
+                </select>
+                <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+                <input type="text" id="textoBanda" placeholder="(225 caracteres)">
+                <button onclick="publicar()">postar</button>
+            </div>
+            <div class="postagem" id="postFa"></div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <img src="assets/logo.png" alt="">
+            <span>copyright &copy; 2023</span> 
+        </div>
+    </div>
+</body>
+<script>
+    function publicar() {
+        var idUsuario = sessionStorage.ID_USUARIO;
+        var postagem = {
+            BOR: selectBOR.value,
+            descricao: textoBanda.value
+        }
+        fetch(`/avisos/publicar/${idUsuario}`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postagem)
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
+                window.location = "pgMee.html";
+                atualizarFeed()
+            } else if (resposta.status == 404) {
+                window.alert("Deu 404!");
+            } else {
+                throw ("Houve um erro ao tentar realizar a postagem! Código da resposta: " + resposta.status);
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        return false;
+    }
+
+    function atualizarFeed() {
+        //aguardar();
+        fetch("/avisos/listar").then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    var feed = document.getElementById("postFa");
+                    var mensagem = document.createElement("span");
+                    mensagem.innerHTML = "Nenhum resultado encontrado."
+                    feed.appendChild(mensagem);
+                    throw "Nenhum resultado encontrado!!";
+                }
+
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    var feed = document.getElementById("postFa");
+                    feed.innerHTML = "";
+                    for (let i = 0; i < resposta.length; i++) {
+                        var postagem = resposta[i];
+
+                        // criando e manipulando elementos do HTML via JavaScript
+                        var divPublicacao = document.createElement("div");
+                        var spanID = document.createElement("span");
+                        var spanTitulo = document.createElement("span");
+                        var spanNome = document.createElement("span");
+                        var divDescricao = document.createElement("div");
+                        var divButtons = document.createElement("div");
+                        var btnEditar = document.createElement("button");
+                        var btnDeletar = document.createElement("button");
+
+
+                        spanID.innerHTML = `<i class="fa-solid fa-user"></i>  ${postagem.nomeFa}`;
+                        if(postagem.BOR=='bom'){
+                            spanTitulo.innerHTML = `<i class="fa-solid fa-thumbs-up"></i> ${postagem.BOR}`;
+                        }else if(postagem.BOR=='ruim'){
+                            spanTitulo.innerHTML=`<i class="fa-solid fa-thumbs-down"></i> ${postagem.BOR}`
+                        }else{
+                            spanTitulo.innerHTML=`<i class="fa-solid fa-thumbs-down"></i> 
+                            <i class="fa-solid fa-thumbs-up"></i> ${postagem.BOR}`   
+                        }
+                        spanNome.innerHTML = "Autor: " + postagem.fkUsuario;
+                        divDescricao.innerHTML =`<i class="fa-solid fa-comment"></i> ${postagem.descricao}`;
+                        btnEditar.innerHTML = "Editar";
+                        btnDeletar.innerHTML = "Deletar";
+
+
+                        divPublicacao = `${spanID.innerHTML} <br> ${spanTitulo.innerHTML}<br> 
+                        ${divDescricao.innerHTML}<br> <br>`
+
+                        feed.innerHTML += divPublicacao
+                    }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+
+        });
+    }
+</script>
+
+</html>

@@ -1,0 +1,136 @@
+*{
+    font-family: poppins;
+    font-weight: 900;
+}
+.container{
+    display: flex;
+    width: 80%;
+    margin:auto;
+}
+
+body{
+    margin: 0;
+    padding: 0; 
+}
+
+/*header*/
+.header{
+     background-color: black;
+     display: flex;
+     }
+ .navbar{
+     display: flex;
+     width: 285px;
+     align-items: center;
+     justify-content: space-between;
+     height: 50px;
+ }
+ .header .container{
+     justify-content: space-between;
+ }
+ .container img{
+     margin-top:1.5%;
+ }
+ .lista{
+     display: flex;
+     padding: 10px;
+     background-color: 0088e5;
+     font-weight: 500;
+     text-decoration: none;
+     color: aliceblue;
+ }
+ .navbar i:hover{
+    color:brown;
+ }
+ /*end header*/
+
+ /*Banda*/
+ .infoBanda img{
+    width: 200px;
+    border-radius: 0 20px 0 20px;
+}
+.infoBanda{
+    width: 230px;
+    height: 240px;
+    background-color:brown;
+    border-radius: 20px 0px 20px 0px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.textoBanda p{
+    color: aliceblue;
+    margin-left: 20px;
+}
+.pg1{
+    background-color: black;
+    height: 300px;
+}
+.pg1 a{
+    margin-left: 20px;
+}
+/* Fim da banda */
+/* começo de show */
+.container h1{
+    align-self: center;
+}
+.pgShow .container{
+    margin-top: 5%;
+}
+
+.pgShow .container input{
+    height: 90px;
+    width: 30%;
+}
+
+.pgShow .container select{
+    height: 30px;
+    width: 19%;
+}
+
+.pgShow .container button{
+    border-radius: 30px;
+    background-color: black;
+    width: 18%;
+    height: 50px;
+    color: white;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+}
+.pgShow .container button:hover{
+    transition: 0.3s;
+    background-color: brown;
+    color: black;
+}
+.container .postagem{
+    padding: 20px;
+    border: solid black;
+    border-radius: 20px;
+}
+.container .postagem i{
+    padding: 5px;
+}
+.formOpiniao{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+/* footer */
+.footer{
+    background-color: black;
+    display: flex;
+    margin-top:3%;
+}
+.footer .container{
+    display: flex;
+    justify-content: center;
+}
+.footer img{
+    width: 30%;
+}
+.footer span{
+    color: white;
+    align-self: center;
+}
