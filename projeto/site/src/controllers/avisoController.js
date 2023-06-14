@@ -4,9 +4,51 @@ function testar(req, res) {
     console.log("ENTRAMOS NO avisoController");
     res.send("ENTRAMOS NO AVISO CONTROLLER");
 }
+function listarPorBanda(req, res) {
+    avisoModel.listarBand().then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os avisos: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
 
 function listar(req, res) {
-    avisoModel.listar().then(function (resultado) {
+    var idBanda=req.params.idBanda
+    avisoModel.listar(idBanda).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os avisos: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+function listarShow(req, res) {
+    var idBanda=req.params.idBanda
+    avisoModel.listarShow(idBanda).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os avisos: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+function listarPct(req, res) {
+    var idBanda=req.params.idBanda
+    avisoModel.listarPct(idBanda).then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
@@ -69,6 +111,7 @@ function publicar(req, res) {
     var BOR = req.body.BOR;
     var descricao = req.body.descricao;
     var idUsuario = req.params.idUsuario;
+    var idBanda = req.params.idBanda;
 
     if (BOR == undefined) {
         res.status(400).send("O título está indefinido!");
@@ -77,7 +120,7 @@ function publicar(req, res) {
     } else if (idUsuario == undefined) {
         res.status(403).send("O id do usuário está indefinido!");
     } else {
-        avisoModel.publicar(BOR, descricao, idUsuario)
+        avisoModel.publicar(BOR, descricao, idUsuario, idBanda)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -130,6 +173,53 @@ function deletar(req, res) {
             }
         );
 }
+function escolher(req, res) {
+    var idBanda = req.params.id
+    avisoModel.escolherB(idBanda)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao deletar o post: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+function escolher(req, res) {
+    var idBanda = req.params.id
+    avisoModel.escolherB(idBanda)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao deletar o post: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+function listarG(req, res) {
+    avisoModel.listarPG()
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao deletar o post: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
 
 module.exports = {
     testar,
@@ -138,5 +228,10 @@ module.exports = {
     pesquisarDescricao,
     publicar,
     editar,
-    deletar
+    deletar,
+    listarPorBanda,
+    escolher,
+    listarG,
+    listarShow,
+    listarPct
 }

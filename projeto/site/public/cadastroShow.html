@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/cadastroShow.css">
+    <title>Cadastro de show</title>
+    <script src="js/sessao.js"></script>
+
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <img src="assets/logo.png" alt="" height="50" width="200">
+            <ul class="navbar">
+                <a class="lista" href="sobreMim.html">
+                    <i>sobre mim</i>
+                </a>
+                <a class="lista" href="index.html">
+                    <i class="fa-solid fa-house"></i>
+                </a>
+                </a>
+                <a class="lista" href="redLogin.html">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+                <a class="lista" href="pagRed.html">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+                <a onclick="limparSessao()" class="lista" href="pagRed.html">
+                    <i>logout</i>
+                </a>
+            </ul>
+        </div>
+    </div>
+
+    <div class="tudao">
+        <div class="form">
+            <div class="container">
+                <span>CEP:</span> <input type="text" id="cepShow" 
+                onblur="formatarCep(this), pesquisaCep(this.value)">
+                <span>Rua:</span> <input type="text" id="ruaShow">
+                <span>Número:</span> <input id="numeroShow">
+                <span>Bairro:</span> <input id="bairroShow">
+                <span>Cidade:</span> <input id="cidadeShow">
+            </div>
+        </div>
+        <div class="form">
+            <div class="container">
+                <span>Preço do ingresso</span> <input type="text" id="precoShow">
+                <span>Organização</span> <input type="text" id="orgShow">
+                <span>Data do show</span> <input type="date" id="dtShow">
+                <button onclick="cadastrarEndereco()">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<script>
+    function pesquisaCep(valor) {
+
+        //Nova variável "cep" somente com dígitos.
+        var cep = valor.replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if (validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                document.getElementById('ruaShow').value = "...";
+                document.getElementById('bairroShow').value = "...";
+                document.getElementById('cidadeShow').value = "...";
+        
+                //Cria um elemento javascript.
+                var script = document.createElement('script');
+
+                //Sincroniza com o callback.
+                script.src = 'https://viacep.com.br/ws/' + cep + '/json/?callback=meu_callback';
+
+                //Insere script no documento e carrega o conteúdo.
+                document.body.appendChild(script);
+
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulário_cep();
+                alert("Formato de CEP inválido.");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulário_cep();
+        }
+    }
+    function meu_callback(conteudo) {
+    if (!("erro" in conteudo)) {
+      //Atualiza os campos com os valores.
+      document.getElementById('ruaShow').value = (conteudo.logradouro);
+      document.getElementById('bairroShow').value = (conteudo.bairro);
+      document.getElementById('cidadeShow').value = (conteudo.uf);
+          } //end if.
+    else {
+      //CEP não Encontrado.
+      limpa_formulário_cep();
+      alert("CEP não encontrado.");
+    }
+  }
+    function formatarCep(cep) {
+        // Remove todos os caracteres não numéricos do valor do input
+        var cepUser = cepShow.value.replace(/\D/g, "");
+
+        // Verifica se o CEP tem o tamanho correto para adicionar o "-"
+        if (cepUser.length === 8) {
+            cepUser = cepUser.substring(0, 5) + "-" + cepUser.substring(5);
+        }
+
+        // Define o valor formatado de volta ao input
+        cepShow.value = cepUser;
+    }
+    function cadastrarEndereco() {
+        //Recupere o valor da nova input pelo nome do id
+        // Agora vá para o método fetch logo abaixo
+        var cepVar = cepShow.value;
+        var ruaVar = ruaShow.value;
+        var numVar = numeroShow.value;
+        var bairroVar = bairroShow.value;
+        var cidadeVar = cidadeShow.value;
+
+        if (cepVar == "" || ruaVar == "" || numVar == "" || bairroVar == "" || cidadeVar== "") {
+            return false;
+        }
+
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrarEndereco", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                cepServer: cepVar,
+                ruaServer: ruaVar,
+                numServer: numVar,
+                bairroServer: bairroVar,
+                cidadeServer: cidadeVar
+                
+            })
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                cadastrarShow()
+            } else {
+                throw ("Houve um erro ao tentar realizar o cadastro!");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        return false;
+    }
+    function limpa_formulário_cep() {
+    //Limpa valores do formulário de cep.
+    document.getElementById('ruaShow').value = ("");
+    document.getElementById('bairroShow').value = ("");
+  }
+  function cadastrarShow(){
+        var valorVar = precoShow.value;
+        var orgVar = orgShow.value;
+        var dtVar = dtShow.value;
+        var fkBandaVar=sessionStorage.ID_BANDA
+        if (valorVar == "" || orgVar == "" || dtVar == "") {
+            return false;
+        }
+
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrarShow", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                valorServer: valorVar,
+                orgServer: orgVar,
+                dtServer: dtVar,    
+                fkBandaServer: fkBandaVar
+            })
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                setTimeout(() => {
+                    window.location = "pgMee.html";
+                }, "2000")
+            } else {
+                throw ("Houve um erro ao tentar realizar o cadastro!");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        return false;
+  }
+</script>
+
+</html>

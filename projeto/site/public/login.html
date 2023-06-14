@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="CSS/login.css">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <script src="js/sessao.js"></script>
 
     <title>login</title>
 </head>
@@ -17,7 +18,7 @@
     <div class="header">
         <div class="container">
             <img src="assets/logo.png" alt="" height="50" width="200">
-            <ul class="navbar">   
+            <ul class="navbar">
                 <a class="lista" href="sobreMim.html">
                     <i>sobre mim</i>
                 </a>
@@ -25,16 +26,20 @@
                     <i class="fa-solid fa-house"></i>
                 </a>
                 </a>
-                <a class="lista" href="login.html">
+                <a class="lista" href="redLogin.html">
                     <i class="fa-solid fa-user"></i>
                 </a>
-                <a class="lista" href="cadastroFa.html">
+                <a class="lista" href="pagRed.html">
                     <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+                <a onclick="limparSessao()" class="lista" href="pagRed.html">
+                    <i>logout</i>
                 </a>
             </ul>
         </div>
     </div>
-    <div class="form">
+
+<div class="form">
         <div class="container">
           <span> Digite seu email</span> <input type="text" id="emailUsuario">
           <span> Digite sua senha</span> <input type="password" id="senhaUsuario">
@@ -46,6 +51,7 @@
 </body>
 <script>
     function entrar() {
+    
         var emailVar = emailUsuario.value;
         var senhaVar = senhaUsuario.value;
 

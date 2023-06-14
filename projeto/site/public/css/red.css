@@ -50,6 +50,10 @@ body {
  
 }
 /*end header*/
+.form{
+    align-items: center;
+    justify-content: center;
+}
 .form .container{
     display: flex;
     flex-direction: column;
@@ -58,7 +62,7 @@ body {
     background-color: brown;
     width: 380px;
     height: 400px;
-    margin-top: 30px;
+    margin-top: 80px;
     border-radius: 30px;
 }
 .form .container .botoesRed{

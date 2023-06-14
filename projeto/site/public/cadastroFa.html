@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+  <script src="js/sessao.js"></script>
 
   <title>Cadastro</title>
 </head>
@@ -18,28 +19,32 @@
 <body>
   <div class="header">
     <div class="container">
-      <img src="assets/logo.png" alt="" height="50" width="200">
-      <ul class="navbar">
-        <a class="lista" href="sobreMim.html">
-          <i>sobre mim</i>
-      </a>
-        <a class="lista" href="index.html">
-          <i class="fa-solid fa-house"></i>
-        </a>
-        </a>
-        <a class="lista" href="login.html">
-          <i class="fa-solid fa-user"></i>
-        </a>
-        <a class="lista" href="">
-          <i class="fa-solid fa-right-to-bracket"></i>
-        </a>
-      </ul>
+        <img src="assets/logo.png" alt="" height="50" width="200">
+        <ul class="navbar">
+            <a class="lista" href="sobreMim.html">
+                <i>sobre mim</i>
+            </a>
+            <a class="lista" href="index.html">
+                <i class="fa-solid fa-house"></i>
+            </a>
+            </a>
+            <a class="lista" href="redLogin.html">
+                <i class="fa-solid fa-user"></i>
+            </a>
+            <a class="lista" href="pagRed.html">
+                <i class="fa-solid fa-right-to-bracket"></i>
+            </a>
+            <a onclick="limparSessao()" class="lista" href="pagRed.html">
+              <i>logout</i>
+          </a>
+        </ul>
     </div>
-  </div>
-  <div class="form">
+</div>
+
+<div class="form">
     <div class="container">
       <span> Digite seu nome de usuario</span> <input type="text" id="nomeUsuario">
-      <span> Digite seu email</span> <input type="email" id="emailUsuario">
+      <span> Digite seu email</span> <input onblur="validaEmail()" type="email" id="emailUsuario">
       <span> Digite sua senha</span> <input type="password" id="senhaUsuario">
       <span>Confirme sua senha</span> <input type="password" id="confirmSenha" onkeyup="valSenha()">
       <span id="aviso"></span>
@@ -49,6 +54,13 @@
     
 </body>
 <script>
+  function validaEmail(){
+        var email=emailUsuario.value
+        if(email.indexOf('@')==-1||email.indexOf('.com')==-1){
+            emailUsuario.placeHolder="Insira um email válido"
+            emailUsuario.value="insira um email valido"
+        }
+    }
   function valSenha(){
     if(senhaUsuario.value!=confirmSenha.value){
       confirmSenha.style.border='solid red 5px'

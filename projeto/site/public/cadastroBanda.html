@@ -11,6 +11,8 @@
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/cadastroBanda.css">
     <title>Cadastro banda</title>
+    <script src="js/sessao.js"></script>
+
 </head>
 <body>
     <div class="header">
@@ -24,11 +26,14 @@
                     <i class="fa-solid fa-house"></i>
                 </a>
                 </a>
-                <a class="lista" href="login.html">
+                <a class="lista" href="redLogin.html">
                     <i class="fa-solid fa-user"></i>
                 </a>
                 <a class="lista" href="pagRed.html">
                     <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+                <a onclick="limparSessao()" class="lista" href="pagRed.html">
+                    <i>logout</i>
                 </a>
             </ul>
         </div>
@@ -37,10 +42,10 @@
 <div class="tudao">
     <div class="form">
         <div class="container">
-          <span> Digite o nome da sua banda</span> <input type="text" id="nomeBanda">
-          <span> Digite seu email</span> <input type="email" id="emailBanda">
+          <span>Digite o nome da sua banda</span> <input type="text" id="nomeBanda">
+          <span>Digite seu email</span> <input onblur="validaEmail()" type="email" id="emailBanda">
           <span>Digite sua senha</span> <input type="password" id="senhaBanda">
-          <span>Confirme sua senha</span> <input type="password" id="confirmSenha">
+          <span>Confirme sua senha</span> <input onkeyup="valSenha()" type="password" id="confirmSenha">
           <span>Insira o gênero</span> <input id="generoBanda">
           <span>Insira uma foto da sua banda(url)</span> <input id="fotoBanda">
         </div>
@@ -49,7 +54,7 @@
         <div class="container">
           <span> Insira seu spotify </span> <input type="text" id="spotifyBanda">
           <span> Insira seu instagram</span> <input type="email" id="instaBanda">
-          <span> Insira seu soundClound</span> <input type="password" id="sdBanda">
+          <span> Insira seu soundClound</span> <input type="text" id="sdBanda">
           <button onclick="cadastrarBanda()">Cadastre-se</button>        
         </div>
       </div>
@@ -58,12 +63,27 @@
     
 </body>
 <script>
+     function valSenha(){
+    if(senhaBanda.value!=confirmSenha.value){
+      confirmSenha.style.border='solid red 5px'
+    }else{
+      confirmSenha.style.border=''
+    }
+  }
+
+    function validaEmail(){
+        var email=emailBanda.value
+        if(email.indexOf('@')==-1||email.indexOf('.com')==-1){
+            emailBanda.placeHolder="Insira um email válido"
+            emailBanda.value="insira um email valido"
+        }
+    }
       function cadastrarBanda() {
 
 //Recupere o valor da nova input pelo nome do id
 // Agora vá para o método fetch logo abaixo
 var nomeVar = nomeBanda.value;
-var generoBandaVar=generoBanda.value
+var generoBandaVar=generoBanda.value;
 var fotoBandaVar=fotoBanda.value;
 var emailVar = emailBanda.value;
 var senhaVar = senhaBanda.value;

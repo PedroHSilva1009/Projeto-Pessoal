@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/red.css">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <title>Document</title>
+    <title>Cadastro</title>
+    <script src="js/sessao.js"></script>
+
 </head>
 <body>
     <div class="header">
@@ -24,16 +26,20 @@
                     <i class="fa-solid fa-house"></i>
                 </a>
                 </a>
-                <a class="lista" href="login.html">
+                <a class="lista" href="redLogin.html">
                     <i class="fa-solid fa-user"></i>
                 </a>
-                <a class="lista" href="">
+                <a class="lista" href="pagRed.html">
                     <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+                <a onclick="limparSessao()" class="lista" href="pagRed.html">
+                    <i>logout</i>
                 </a>
             </ul>
         </div>
     </div>
-    <div class="form">
+
+ <div class="form">
         <div class="container">
             <span>Com que tipo de perfil deseja se cadastrar?</span>
             <div class="botoesRed">

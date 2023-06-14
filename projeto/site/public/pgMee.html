@@ -14,9 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
     <title>Banda</title>
+    <script src="js/sessao.js"></script>
 </head>
 
-<body onload="atualizarFeed()">
+<body onload="atualizarFeed(),escolherBanda(), atualizarShow(), contarPct()">
     <div class="header">
         <div class="container">
             <img src="assets/logo.png" alt="" height="50" width="200">
@@ -28,36 +29,41 @@
                     <i class="fa-solid fa-house"></i>
                 </a>
                 </a>
-                <a class="lista" href="login.html">
+                <a class="lista" href="redLogin.html">
                     <i class="fa-solid fa-user"></i>
                 </a>
                 <a class="lista" href="pagRed.html">
                     <i class="fa-solid fa-right-to-bracket"></i>
                 </a>
+                <a onclick="limparSessao()" class="lista" href="pagRed.html">
+                    <i>logout</i>
+                </a>
             </ul>
         </div>
     </div>
 
+
     <div class="pg1">
         <div class="container">
             <div class="infoBanda">
-                <img src="assets/meebanda.jpg" alt="">
+                <img height="200px" width="200px" id="foto" src="" alt="">
             </div>
             <div class="textoBanda">
-                <p>Banda:mee</p>
-                <p>Genero:Hardcore</p>
-                <p>Criação:2018</p>
-                <a href=""><i class="fa-brands fa-spotify"></i></a>
-                <a href=""><i class="fa-brands fa-instagram"></i></i></a>
-                <a href=""><i class="fa-brands fa-soundcloud"></i></i></a>
+                <p id="nome"></p>
+                <p id="genero"></p>
+                <a id="spo" href=""><i class="fa-brands fa-spotify"></i></a>
+                <a id="insta" href=""><i class="fa-brands fa-instagram"></i></a>
+                <a id="sd" href=""><i class="fa-brands fa-soundcloud"></i></a> <br>
+                <p id="pctAv"></p>
             </div>
+            <button id="addShow" onclick="mudarPg()">Adicionar show</button>
         </div>
     </div>
 
     <div class="pgShow">
         <div class="container">
             <div class="formOpiniao">
-                <span>Fale algo sobre a banda</span>
+                <span id="texto">Fale algo sobre a banda</span>
                 <select id="selectBOR" name="select">
                     <option value="bom" selected>Achei bom</option>
                     <option value="ruim">Achei ruim</option>
@@ -65,26 +71,72 @@
                 </select>
                 <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
                 <input type="text" id="textoBanda" placeholder="(225 caracteres)">
-                <button onclick="publicar()">postar</button>
+                <button id="pubBanda" onclick="publicar()">postar</button>
             </div>
-            <div class="postagem" id="postFa"></div>
+            <div class="feed">
+                <h1>Avaliações</h1>
+                <div class="postagem" id="postFa"></div>
+            </div>
+            <div class="showBanda">
+                <h1>Shows</h1>
+                <div id="shows" class="divShows"></div>
+            </div>
         </div>
     </div>
+
     <div class="footer">
         <div class="container">
             <img src="assets/logo.png" alt="">
-            <span>copyright &copy; 2023</span> 
+            <span>copyright &copy; 2023</span>
         </div>
     </div>
 </body>
 <script>
+    if (sessionStorage.ID_BANDA == sessionStorage.idBanda) {
+        document.getElementById("selectBOR").style.display = "none";
+        document.getElementById("textoBanda").style.display = "none";
+        document.getElementById("pubBanda").style.display = "none";
+        document.getElementById("texto").style.display = "none";
+        document.getElementById("addShow").style.display = "block";
+    } else {
+        document.getElementById("selectBOR").style.display = "block";
+        document.getElementById("textoBanda").style.display = "block";
+        document.getElementById("pubBanda").style.display = "block";
+        document.getElementById("texto").style.display = "block";
+        document.getElementById("addShow").style.display = "none";
+    }
+   function contarPct(){
+    var idBanda = sessionStorage.idBanda
+        //aguardar();
+        fetch(`/avisos/listarPct/${idBanda}`).then(function (resposta) {
+            if (resposta.ok) {
+
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    pctAv.innerHTML=""
+                    var positivas = resposta[0].avPositivas
+                    var total=resposta[1].avPositivas
+                    console.log(`${positivas} tome ${total}`)
+
+                    var porcentagem = (positivas/total)*100
+                    pctAv.innerHTML=`${porcentagem}% dos usuários <br>classificam essa banda como boa`
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+
+        });
+   }
     function publicar() {
-        var idUsuario = sessionStorage.ID_USUARIO;
+        var idUsuario = sessionStorage.ID_USUARIO
+        var idBanda = sessionStorage.idBanda
         var postagem = {
             BOR: selectBOR.value,
             descricao: textoBanda.value
         }
-        fetch(`/avisos/publicar/${idUsuario}`, {
+        fetch(`/avisos/publicar/${idUsuario}/${idBanda}`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json"
@@ -111,9 +163,11 @@
     }
 
     function atualizarFeed() {
+        var idBanda = sessionStorage.idBanda
         //aguardar();
-        fetch("/avisos/listar").then(function (resposta) {
+        fetch(`/avisos/listar/${idBanda}`).then(function (resposta) {
             if (resposta.ok) {
+
                 if (resposta.status == 204) {
                     var feed = document.getElementById("postFa");
                     var mensagem = document.createElement("span");
@@ -136,30 +190,121 @@
                         var spanTitulo = document.createElement("span");
                         var spanNome = document.createElement("span");
                         var divDescricao = document.createElement("div");
-                        var divButtons = document.createElement("div");
-                        var btnEditar = document.createElement("button");
-                        var btnDeletar = document.createElement("button");
 
 
                         spanID.innerHTML = `<i class="fa-solid fa-user"></i>  ${postagem.nomeFa}`;
-                        if(postagem.BOR=='bom'){
+                        if (postagem.BOR == 'bom') {
                             spanTitulo.innerHTML = `<i class="fa-solid fa-thumbs-up"></i> ${postagem.BOR}`;
-                        }else if(postagem.BOR=='ruim'){
-                            spanTitulo.innerHTML=`<i class="fa-solid fa-thumbs-down"></i> ${postagem.BOR}`
-                        }else{
-                            spanTitulo.innerHTML=`<i class="fa-solid fa-thumbs-down"></i> 
-                            <i class="fa-solid fa-thumbs-up"></i> ${postagem.BOR}`   
+                        } else if (postagem.BOR == 'ruim') {
+                            spanTitulo.innerHTML = `<i class="fa-solid fa-thumbs-down"></i> ${postagem.BOR}`
+                        } else {
+                            spanTitulo.innerHTML = `<i class="fa-solid fa-thumbs-down"></i> 
+                            <i class="fa-solid fa-thumbs-up"></i> ${postagem.BOR}`
                         }
                         spanNome.innerHTML = "Autor: " + postagem.fkUsuario;
-                        divDescricao.innerHTML =`<i class="fa-solid fa-comment"></i> ${postagem.descricao}`;
-                        btnEditar.innerHTML = "Editar";
-                        btnDeletar.innerHTML = "Deletar";
-
+                        divDescricao.innerHTML = `<i class="fa-solid fa-comment"></i> ${postagem.descricao}`;
 
                         divPublicacao = `${spanID.innerHTML} <br> ${spanTitulo.innerHTML}<br> 
                         ${divDescricao.innerHTML}<br> <br>`
 
                         feed.innerHTML += divPublicacao
+                    }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+
+        });
+    }
+    function escolherBanda() {
+        var id = sessionStorage.idBanda
+        fetch(`/avisos/escolherBanda/${id}`).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    for (let i = 0; i < resposta.length; i++) {
+
+                        var dado = resposta[i];
+                        // criando e manipulando elementos do HTML via JavaScript
+                        nome.innerHTML = `Banda: ${dado.nomeBanda}`
+                        genero.innerHTML = `Genero: ${dado.generoBanda}`
+                        foto.src = `${dado.fotoBanda}`
+                        spo.href = `${dado.spotifyBanda}`
+                        insta.href = `${dado.instaBanda}`
+                        sd.href = `${dado.soundCloundBanda}`
+                    }
+                });
+
+                if (resposta.status == 204) {
+                    throw "Nenhum resultado encontrado!!";
+                }
+
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+
+        });
+    }
+    function mudarPg() {
+        window.location = "cadastroShow.html"
+    }
+    function atualizarShow() {
+        var idBanda = sessionStorage.idBanda
+        //aguardar();
+        fetch(`/avisos/listarShow/${idBanda}`).then(function (resposta) {
+            if (resposta.ok) {
+
+                if (resposta.status == 204) {
+                    var show = document.getElementById("shows");
+                    var mensagem = document.createElement("span");
+                    mensagem.innerHTML = "Nenhum resultado encontrado."
+                    show.appendChild(mensagem);
+                    throw "Nenhum resultado encontrado!!";
+                }
+
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    shows.innerHTML = "";
+
+                    for (let i = 0; i < resposta.length; i++) {
+                        var show = resposta[i];
+                        // criando e manipulando elementos do HTML via JavaScript
+                        var divShow = document.createElement("div");
+                        var spanDtShow = document.createElement("span");
+                        var spanPreco = document.createElement("span");
+                        var spanRua = document.createElement("span");
+                        var spanBairro = document.createElement("span");
+                        var spanCidade = document.createElement("span");
+                        var spanNum = document.createElement("span");
+                        var spanOrg = document.createElement("span");
+
+
+                        spanDtShow.innerHTML = `<i class="fa-solid fa-calendar-days"></i> ${show.dtShow}`;
+                        spanPreco.innerHTML = `<i class="fa-solid fa-dollar-sign"></i> ${show.precoIngresso}`
+                        spanRua.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${show.rua}`;
+                        spanBairro.innerHTML = `${show.bairro}`;
+                        spanCidade.innerHTML = `${show.cidade}`;
+                        spanNum.innerHTML = `${show.numero}`;
+                        spanOrg.innerHTML = `${show.organizacao}`;
+
+
+                        divShow = `${spanDtShow.innerHTML} <br> <br> ${spanPreco.innerHTML}<br><br> 
+                               ${spanRua.innerHTML}<br> 
+                       Bairro: ${spanBairro.innerHTML}<br>
+                       Cidade: ${spanCidade.innerHTML}<br> 
+                       Número: ${spanNum.innerHTML}<br>
+                       Organizador: ${spanOrg.innerHTML}<br> 
+                        <br> <br> <br>`
+
+                        shows.innerHTML += divShow
+
+
+
+
                     }
                 });
             } else {

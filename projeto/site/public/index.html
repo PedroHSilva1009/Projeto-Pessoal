@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
     <title>Know your band</title>
+    <script src="js/sessao.js"></script>
+
 </head>
 
-<body>
+<body onload="atualizarBandas(), listarPGenero()">
     <div class="header">
         <div class="container">
             <img src="assets/logo.png" alt="" height="50" width="200">
@@ -22,37 +24,41 @@
                 <a class="lista" href="sobreMim.html">
                     <i>sobre mim</i>
                 </a>
-                <a class="lista" href="">
+                <a class="lista" href="index.html">
                     <i class="fa-solid fa-house"></i>
                 </a>
                 </a>
-                <a class="lista" href="login.html">
+                <a class="lista" href="redLogin.html">
                     <i class="fa-solid fa-user"></i>
                 </a>
                 <a class="lista" href="pagRed.html">
                     <i class="fa-solid fa-right-to-bracket"></i>
                 </a>
+                <a onclick="limparSessao()" class="lista" href="pagRed.html">
+                    <i>logout</i>
+                </a>
             </ul>
         </div>
     </div>
-    <div class="pag1">
+
+<div class="pag1">
         <div class="container">
             <div class="texto">
                 <h1>
-                    Principais bandas da semana
+                    Principais bandas
                 </h1>
             </div>
-            <div class="bandas">
+            <div id="topBandas" class="bandas">
                 
-                    <a href="pgMee.html"><img src="assets/mee.webp" alt=""></a>
-
-                
-                    <a href=""><img src="assets/budang.jpg" alt=""></a>
-
-                
-                    <a href=""><img src="assets/tonelada.webp" alt=""></a>
 
             </div>
+        </div>
+    </div>
+
+    <div class="maisB">
+        <div class="container">
+            <div class="texto"> <h1>Outras bandas do gênero</h1></div>
+            <div id="fotosB"></div>
         </div>
     </div>
 
@@ -63,11 +69,69 @@
         </div>
     </div>
 
-    
-
 </body>
 
 </html>
 <script>
+function listarPGenero(){
+    fetch("/avisos/listarPBandas").then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    mensagem.innerHTML = "Nenhum resultado encontrado."
+                    feed.appendChild(mensagem);
+                    throw "Nenhum resultado encontrado!!";
+                }
 
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    for (let i = 0; i < resposta.length; i++) {
+                        var foto = resposta[i];
+                        // criando e manipulando elementos do HTML via JavaScript
+                        fotosB.innerHTML+= `<a onclick='escolherB(${foto.idBanda})' href="pgMee.html"><img src=${foto.fotoBanda} alt=""></a>`
+                       
+                    }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+
+        });
+    }
+
+function atualizarBandas() {
+        //aguardar();
+        fetch("/avisos/listarBandas").then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    mensagem.innerHTML = "Nenhum resultado encontrado."
+                    feed.appendChild(mensagem);
+                    throw "Nenhum resultado encontrado!!";
+                }
+
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    topBandas.innerHTML = ""
+                    for (let i = 0; i < resposta.length; i++) {
+                        
+                        var foto = resposta[i];
+                        // criando e manipulando elementos do HTML via JavaScript
+                        topBandas.innerHTML+= `<a onclick='escolherB(${foto.idBanda})' href="pgMee.html"><img id="${foto.fotoBanda}" src=${foto.fotoBanda} alt=""></a>`
+
+                       
+                    }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+
+        });
+    }
+    function escolherB(id){
+                //aguardar();
+                sessionStorage.idBanda=id
+    }
 </script>

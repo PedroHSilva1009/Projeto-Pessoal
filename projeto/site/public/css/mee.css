@@ -20,7 +20,7 @@ body{
      }
  .navbar{
      display: flex;
-     width: 285px;
+     width: 400px;
      align-items: center;
      justify-content: space-between;
      height: 50px;
@@ -31,9 +31,17 @@ body{
  .container img{
      margin-top:1.5%;
  }
+ .header .container .fa-magnifying-glass{
+    margin-right: 5px;
+ }
+ * input{
+    border-radius: 9px;
+    height: 25px;
+    width: 150px;
+ }
  .lista{
      display: flex;
-     padding: 10px;
+     padding: 20px;
      background-color: 0088e5;
      font-weight: 500;
      text-decoration: none;
@@ -63,6 +71,10 @@ body{
     color: aliceblue;
     margin-left: 20px;
 }
+.textoBanda a{
+    text-decoration: none;
+    color: blueviolet;
+}
 .pg1{
     background-color: black;
     height: 300px;
@@ -70,20 +82,33 @@ body{
 .pg1 a{
     margin-left: 20px;
 }
+.pg1 button{
+    position: absolute;
+    height: 5%;
+    margin-top: 15%;
+    left: 30%;
+    color: black;
+    background-color: white;
+    border-radius: 30px;
+    cursor: pointer;
+    border: none;
+    width: 10%;
+    transition: 0.5s;
+    top: 18%;
+}
+.pg1 button:hover{
+    background-color: brown;
+}
 /* Fim da banda */
 /* começo de show */
 .container h1{
     align-self: center;
-}
-.pgShow .container{
-    margin-top: 5%;
 }
 
 .pgShow .container input{
     height: 90px;
     width: 30%;
 }
-
 .pgShow .container select{
     height: 30px;
     width: 19%;
@@ -105,23 +130,44 @@ body{
     color: black;
 }
 .container .postagem{
-    padding: 20px;
+    padding: 10px;
     border: solid black;
     border-radius: 20px;
 }
 .container .postagem i{
     padding: 5px;
 }
+.showBanda h1{
+    margin-left: 50%;
+}
 .formOpiniao{
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin-top: 5%;
+}
+/* fim de show */
+/* comeco de show msm */
+.container .showBanda #shows{
+    padding: 10px;
+    border: solid black;
+    border-radius: 20px;
+    margin-left: 30%;
+    width: 200px;
+}
+#pctAv{
+    color: white;
+    margin-left: 5%;
+}
+.container .showBanda{
+    display: flex;
+    flex-direction: column;
 }
 /* footer */
 .footer{
+    margin-top: 7px;
     background-color: black;
     display: flex;
-    margin-top:3%;
 }
 .footer .container{
     display: flex;
