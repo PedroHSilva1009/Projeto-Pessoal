@@ -1,0 +1,139 @@
+CREATE TABLE `banda` (
+  `idBanda` int NOT NULL AUTO_INCREMENT,
+  `emailBanda` varchar(45) DEFAULT NULL,
+  `senhaBanda` varchar(45) DEFAULT NULL,
+  `nomeBanda` varchar(45) NOT NULL,
+  `generoBanda` varchar(45) NOT NULL,
+  `fotoBanda` text,
+  `spotifyBanda` text,
+  `soundCloundBanda` text,
+  `instaBanda` text,
+  PRIMARY KEY (`idBanda`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `endereco` (
+  `idEndereco` int NOT NULL AUTO_INCREMENT,
+  `rua` varchar(45) DEFAULT NULL,
+  `numero` varchar(45) DEFAULT NULL,
+  `bairro` varchar(45) DEFAULT NULL,
+  `CEP` varchar(45) DEFAULT NULL,
+  `cidade` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idEndereco`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `fa` (
+  `idFa` int NOT NULL AUTO_INCREMENT,
+  `nomeFa` varchar(45) NOT NULL,
+  `emailFa` varchar(45) NOT NULL,
+  `senhaFa` char(25) NOT NULL,
+  `postFa` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`idFa`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `postagem` (
+  `idPostagem` int NOT NULL AUTO_INCREMENT,
+  `BOR` varchar(45) DEFAULT NULL,
+  `descricao` varchar(225) DEFAULT NULL,
+  `fkBanda` int DEFAULT NULL,
+  `fkUsuario` int DEFAULT NULL,
+  PRIMARY KEY (`idPostagem`),
+  KEY `fkBanda` (`fkBanda`),
+  KEY `fkUsuario` (`fkUsuario`),
+  CONSTRAINT `postagem_ibfk_1` FOREIGN KEY (`fkBanda`) REFERENCES `banda` (`idBanda`),
+  CONSTRAINT `postagem_ibfk_2` FOREIGN KEY (`fkUsuario`) REFERENCES `fa` (`idFa`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `showbanda` (
+  `idShow` int NOT NULL AUTO_INCREMENT,
+  `dataShow` date DEFAULT NULL,
+  `precoIngresso` decimal(5,2) DEFAULT NULL,
+  `fkBanda` int NOT NULL,
+  `fkEndereco` int NOT NULL,
+  `organizacao` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idShow`,`fkBanda`,`fkEndereco`),
+  KEY `fk_showBanda_banda` (`fkBanda`),
+  KEY `fk_showBanda_endereco1` (`fkEndereco`),
+  CONSTRAINT `fk_showBanda_banda` FOREIGN KEY (`fkBanda`) REFERENCES `banda` (`idBanda`),
+  CONSTRAINT `fk_showBanda_endereco1` FOREIGN KEY (`fkEndereco`) REFERENCES `endereco` (`idEndereco`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `projetoindividual`.`banda`
+(`idBanda`,
+`emailBanda`,
+`senhaBanda`,
+`nomeBanda`,
+`generoBanda`,
+`fotoBanda`,
+`spotifyBanda`,
+`soundCloundBanda`,
+`instaBanda`)
+VALUES
+(<{idBanda: }>,
+<{emailBanda: }>,
+<{senhaBanda: }>,
+<{nomeBanda: }>,
+<{generoBanda: }>,
+<{fotoBanda: }>,
+<{spotifyBanda: }>,
+<{soundCloundBanda: }>,
+<{instaBanda: }>);
+
+INSERT INTO `projetoindividual`.`endereco`
+(`idEndereco`,
+`rua`,
+`numero`,
+`bairro`,
+`CEP`,
+`cidade`)
+VALUES
+(<{idEndereco: }>,
+<{rua: }>,
+<{numero: }>,
+<{bairro: }>,
+<{CEP: }>,
+<{cidade: }>);
+
+INSERT INTO `projetoindividual`.`fa`
+(`idFa`,
+`nomeFa`,
+`emailFa`,
+`senhaFa`,
+`postFa`)
+VALUES
+(<{idFa: }>,
+<{nomeFa: }>,
+<{emailFa: }>,
+<{senhaFa: }>,
+<{postFa: }>);
+
+INSERT INTO `projetoindividual`.`postagem`
+(`idPostagem`,
+`BOR`,
+`descricao`,
+`fkBanda`,
+`fkUsuario`)
+VALUES
+(<{idPostagem: }>,
+<{BOR: }>,
+<{descricao: }>,
+<{fkBanda: }>,
+<{fkUsuario: }>);
+
+INSERT INTO `projetoindividual`.`showbanda`
+(`idShow`,
+`dataShow`,
+`precoIngresso`,
+`fkBanda`,
+`fkEndereco`,
+`organizacao`)
+VALUES
+(<{idShow: }>,
+<{dataShow: }>,
+<{precoIngresso: }>,
+<{fkBanda: }>,
+<{fkEndereco: }>,
+<{organizacao: }>);
+
+
+
+
